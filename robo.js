@@ -2,12 +2,12 @@ const wppconnect = require('@wppconnect-team/wppconnect');
 
 
 var userStages = [];
-exports.userStages = userStages;
 
-const wppclient = wppconnect.create()
+
+wppconnect.create()
     .then((client) => start(client))
     .catch((error) => console.log(error));
-exports.wppclient = wppclient;
+
 
 
 function start(client) {
