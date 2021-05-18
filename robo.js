@@ -4,9 +4,16 @@ const wppconnect = require('@wppconnect-team/wppconnect');
 var userStages = [];
 
 
-wppconnect.create()
-    .then((client) => start(client))
-    .catch((error) => console.log(error));
+functions.https.onRequest((request, response) => {
+    functions.logger.info("Hello logs!", { structuredData: true });
+
+    wppconnect.create()
+        .then((client) => start(client))
+        .catch((error) => console.log(error));
+
+
+    response.send("Hello from Heroku!");
+});
 
 
 
