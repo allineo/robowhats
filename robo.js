@@ -10,6 +10,14 @@ var userStages = [];
 
 let server = http.createServer(function (req, res) {
 
+    const myTokenStore = new wppconnect.tokenStore.FileTokenStore({
+        decodeFunction: JSON.parse,
+        encodeFunction: JSON.stringify,
+        encoding: 'utf8',
+        fileExtension: '.json',
+        path: './tokens',
+    });
+
     wppconnect.create({
         session: 'test',
         tokenStore: myTokenStore,
