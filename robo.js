@@ -10,7 +10,58 @@ var userStages = [];
 
 let server = http.createServer(function (req, res) {
 
-    wppconnect.create()
+    wppconnect.create({
+        session: 'test',
+        tokenStore: myTokenStore,
+        catchQR: (base64Qrimg, asciiQR, attempts, urlCode) => {
+
+        },
+        statusFind: (statusSession, session) => {
+            console.log('Status Session: ', statusSession, '\n');
+            console.log('Session name: ', session, '\n');
+        },
+        folderNameToken: 'tokens',
+        headless: true,
+        devtools: false,
+        useChrome: true,
+        debug: false,
+        logQR: true,
+        browserArgs: [
+            '--log-level=3',
+            '--no-default-browser-check',
+            '--disable-site-isolation-trials',
+            '--no-experiments',
+            '--ignore-gpu-blacklist',
+            '--ignore-certificate-errors',
+            '--ignore-certificate-errors-spki-list',
+            '--disable-gpu',
+            '--disable-extensions',
+            '--disable-default-apps',
+            '--enable-features=NetworkService',
+            '--disable-setuid-sandbox',
+            '--no-sandbox',
+            '--disable-webgl',
+            '--disable-threaded-animation',
+            '--disable-threaded-scrolling',
+            '--disable-in-process-stack-traces',
+            '--disable-histogram-customizer',
+            '--disable-gl-extensions',
+            '--disable-composited-antialiasing',
+            '--disable-canvas-aa',
+            '--disable-3d-apis',
+            '--disable-accelerated-2d-canvas',
+            '--disable-accelerated-jpeg-decoding',
+            '--disable-accelerated-mjpeg-decode',
+            '--disable-app-list-dismiss-on-blur',
+            '--disable-accelerated-video-decode',
+        ],
+        disableSpins: true,
+        disableWelcome: true,
+        updatesLog: true,
+        autoClose: 60000,
+        waitForLogin: true,
+        createPathFileToken: true,
+    })
         .then((client) => start(client))
         .catch((error) => console.log(error));
 
