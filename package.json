@@ -19,6 +19,6 @@
   "homepage": "https://github.com/allineo/robowhats#readme",
   "dependencies": {
     "@wppconnect-team/wppconnect": "^1.4.1",
-    "express": "^4.17.1"
+    "chromium": "^3.0.2"
   }
 }
