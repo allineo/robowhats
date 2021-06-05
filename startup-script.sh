@@ -13,8 +13,9 @@ cd /opt/app
 
 GITHUB_USER='seu usuario do github aqui'
 GITHUB_PASSWORD='sua senha do github aqui'
-git clone https://${GITHUB_USER}:${GITHUB_PASSWORD}@github.com/${GITHUB_USER}/robowhats
-cd robowhats
+GITHUB_REPO='robowhats'
+git clone https://${GITHUB_USER}:${GITHUB_PASSWORD}@github.com/${GITHUB_USER}/${GITHUB_REPO}
+cd ${GITHUB_REPO}
 
 npm install
 nohup npm start &
