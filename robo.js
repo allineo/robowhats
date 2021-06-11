@@ -10,7 +10,45 @@ const db = firebaseadmin.firestore();
 
 var userStages = [];
 
-wppconnect.create()
+wppconnect.create({ 
+    session: 'session', //Pass the name of the client you want to start the bot
+    catchQR: (base64Qrimg, asciiQR, attempts, urlCode) => {
+      console.log('Number of attempts to read the qrcode: ', attempts);
+      console.log('Terminal qrcode: ', asciiQR);
+      console.log('base64 image string qrcode: ', base64Qrimg);
+      console.log('urlCode (data-ref): ', urlCode);
+    },
+    statusFind: (statusSession, session) => {
+      console.log('Status Session: ', statusSession); //return isLogged || notLogged || browserClose || qrReadSuccess || qrReadFail || autocloseCalled || desconnectedMobile || deleteToken
+      //Create session wss return "serverClose" case server for close
+      console.log('Session name: ', session);
+    },
+    headless: true, // Headless chrome
+    devtools: false, // Open devtools by default
+    useChrome: true, // If false will use Chromium instance
+    debug: false, // Opens a debug session
+    logQR: true, // Logs QR automatically in terminal
+    browserWS: '', // If u want to use browserWSEndpoint
+    browserArgs: [''], // Parameters to be added into the chrome browser instance
+    puppeteerOptions: {
+      headless: true,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-accelerated-2d-canvas',
+        '--no-first-run',
+        '--no-zygote',
+        '--single-process', // <- this one doesn't works in Windows
+        '--disable-gpu'
+      ],
+    }, // Will be passed to puppeteer.launch
+    disableWelcome: false, // Option to disable the welcoming message which appears in the beginning
+    updatesLog: true, // Logs info updates automatically in terminal
+    autoClose: 60000, // Automatically closes the wppconnect only when scanning the QR code (default 60 seconds, if you want to turn it off, assign 0 or false)
+    tokenStore: 'file', // Define how work with tokens, that can be a custom interface
+    folderNameToken: './tokens', //folder name when saving tokens
+ })
     .then((client) => start(client))
     .catch((error) => console.log(error));
 
