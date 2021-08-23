@@ -4,7 +4,7 @@
   "description": "",
   "main": "robo.js",
   "scripts": {
-    "start": "node robo.js",
+    "start": "node ./src/robo.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/allineo/robowhats#readme",
   "dependencies": {
-    "@wppconnect-team/wppconnect": "^1.6.0",
+    "@wppconnect-team/wppconnect": "^1.8.13",
     "firebase-admin": "^9.9.0"
   }
 }
