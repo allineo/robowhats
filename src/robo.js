@@ -4,47 +4,63 @@ const firebasedb = require('./firebase.js');
 var userStages = [];
 
 wppconnect.create({
-    session: 'appbasicao',
+    session: 'whatsbot',
     autoClose: false,
     puppeteerOptions: { args: ['--no-sandbox'] }
 })
-    .then((client) => start(client))
+    .then((client) =>
+        client.onMessage((message) => {
+            console.log('Mensagem digitada pelo usuário: ' + message.body);
+            queryUserByPhone(client, message);
+        }))
     .catch((error) => console.log(error));
 
 
-function start(client) {
-    client.onMessage((message) => {
-        console.log('Mensagem digitada pelo usuário: ' + message.body);
-        stages(client, message);
-    });
+async function queryUserByPhone(client, message) {
+    let phone = (message.from).replace(/[^\d]+/g, '');
+    let userdata = await firebasedb.queryByPhone(phone);
+    if (userdata == null) {
+        userdata = await saveUser(client, message);
+    }
+    console.log('Usuário corrente: ' + userdata['id']);
+    stages(client, message, userdata);
 }
 
 
-//  Stages = Olá  >>  Nome  >>  CPF  >> Fim
-function stages(client, message) {
-    stage = userStages[message.from];
-    switch (stage) {
-        case 'Nome':
-            const nome = message.body;
-            sendWppMessage(client, message.from, 'Obrigada, ' + nome);
-            sendWppMessage(client, message.from, 'Digite seu *CPF*:');
-            userStages[message.from] = 'CPF';
-            break;
-        case 'CPF':
-            const cpf = message.body;
-            sendWppMessage(client, message.from, 'Obrigada por informar seu CPF: ' + cpf);
-            sendWppMessage(client, message.from, 'Fim');
-            userStages[message.from] = 'Fim';
-            break;
-        case 'Fim':
-            sendWppMessage(client, message.from, 'Fim');
-            break;
-        default: // Olá 
-            console.log('*Usuário atual* from:' + message.from);
-            saveUser(message);
-            sendWppMessage(client, message.from, 'Bem vindo ao Robô de Whatsapp do AppBasicão!');
+//  Stages = ola  >>  nome  >>  cpf  >>  fim
+async function stages(client, message, userdata) {
+    if (userStages[message.from] == undefined) {
+        sendWppMessage(client, message.from, 'Bem vindo ao Robô de Whatsapp do AppBasicão!');
+    }
+    if (userdata['nome'] == undefined) {
+        if (userStages[message.from] == undefined) {
             sendWppMessage(client, message.from, 'Digite seu *NOME*:');
-            userStages[message.from] = 'Nome';
+            userStages[message.from] = 'nome';
+        } else {
+            userdata['nome'] = message.body;
+            firebasedb.update(userdata);
+            sendWppMessage(client, message.from, 'Obrigada, ' + message.body);
+            sendWppMessage(client, message.from, 'Digite seu *CPF*:');
+            userStages[message.from] = 'cpf';
+        }
+
+    } else if (userdata['cpf'] == undefined) {
+        if (userStages[message.from] == undefined) {
+            sendWppMessage(client, message.from, 'Digite seu *CPF*:');
+            userStages[message.from] = 'cpf';
+        } else {
+            userdata['cpf'] = (message.body).replace(/[^\d]+/g, '');
+            firebasedb.update(userdata);
+            sendWppMessage(client, message.from, 'Obrigada por informar seu CPF: ' + message.body);
+            sendWppMessage(client, message.from, 'Fim');
+            userStages[message.from] = 'fim';
+        }
+
+    } else {
+        if (userStages[message.from] == undefined) {
+            userStages[message.from] = 'fim';
+        }
+        sendWppMessage(client, message.from, 'Fim');
     }
 }
 
