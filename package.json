@@ -18,7 +18,6 @@
   },
   "homepage": "https://github.com/allineo/robowhats#readme",
   "dependencies": {
-    "@wppconnect-team/wppconnect": "^1.8.14",
     "firebase-admin": "^9.9.0",
     "whatsapp-web.js": "^1.14.1"
   }
