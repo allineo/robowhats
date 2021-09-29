@@ -2,9 +2,9 @@
   "name": "robowhats",
   "version": "1.0.0",
   "description": "",
-  "main": "robo.js",
+  "main": "test.js",
   "scripts": {
-    "start": "node ./src/robo.js",
+    "start": "node ./src/test.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/allineo/robowhats#readme",
   "dependencies": {
-    "@wppconnect-team/wppconnect": "^1.8.13",
+    "@wppconnect-team/wppconnect": "^1.8.14",
     "firebase-admin": "^9.9.0"
   }
 }
