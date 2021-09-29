@@ -1,5 +1,7 @@
 const { Client } = require('whatsapp-web.js');
-const qrCode = require('qrcode-terminal');
+// const qrCode = require('qrcode-terminal');
+
+// https://github.com/pedroslopez/whatsapp-web.js
 
 //const client = new Client({ puppeteer: { headless: false }, session: sessionCfg });
 
