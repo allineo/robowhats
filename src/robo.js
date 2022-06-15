@@ -20,7 +20,7 @@ async function queryUserByPhone(client, message) {
     let phone = (message.from).replace(/[^\d]+/g, '');
     let userdata = await firebasedb.queryByPhone(phone);
     if (userdata == null) {
-        userdata = await saveUser(client, message);
+        userdata = await saveUser(message);
     }
     console.log('Usuário corrente: ' + userdata['id']);
     stages(client, message, userdata);
